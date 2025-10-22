@@ -1,0 +1,18 @@
+{
+  "extends": "@appium/tsconfig/tsconfig",
+  "compilerOptions": {
+    "outDir": "./build",
+    "rootDir": "./lib",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true
+  },
+  "include": [
+    "lib/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "build",
+    "test"
+  ]
+}
