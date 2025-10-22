@@ -29,10 +29,8 @@
     "lib": "./lib"
   },
   "files": [
-    "index.js",
     "lib",
-    "build/index.*",
-    "build/lib",
+    "build",
     "CHANGELOG.md"
   ],
   "dependencies": {
