@@ -1,4 +1,4 @@
-import { SubProcess, TeenProcessExecResult } from 'teen_process';
+import {SubProcess, TeenProcessExecResult} from 'teen_process';
 
 /**
  * Information about a running process on the device

@@ -1,5 +1,5 @@
-import type { ListFilesOptions, PullFileOptions } from '../types';
-import type { Devicectl } from '../devicectl';
+import type {ListFilesOptions, PullFileOptions} from '../types';
+import type {Devicectl} from '../devicectl';
 
 /**
  * Lists files at a specified path on the device
@@ -8,12 +8,9 @@ export async function listFiles(
   this: Devicectl,
   domainType: string,
   domainIdentifier: string,
-  opts: ListFilesOptions = {}
+  opts: ListFilesOptions = {},
 ): Promise<string[]> {
-  const subcommandOptions = [
-    '--domain-type', domainType,
-    '--domain-identifier', domainIdentifier,
-  ];
+  const subcommandOptions = ['--domain-type', domainType, '--domain-identifier', domainIdentifier];
 
   if (opts.username) {
     subcommandOptions.push('--username', opts.username);
@@ -23,11 +20,11 @@ export async function listFiles(
     subcommandOptions.push('--subdirectory', opts.subdirectory);
   }
 
-  const { stdout } = await this.execute(['device', 'info', 'files'], {
+  const {stdout} = await this.execute(['device', 'info', 'files'], {
     subcommandOptions,
   });
 
-  return JSON.parse(stdout).result.files.map(({ name }: { name: string }) => name);
+  return JSON.parse(stdout).result.files.map(({name}: {name: string}) => name);
 }
 
 /**
@@ -37,13 +34,17 @@ export async function pullFile(
   this: Devicectl,
   from: string,
   to: string,
-  opts: PullFileOptions
+  opts: PullFileOptions,
 ): Promise<string> {
   const subcommandOptions = [
-    '--domain-type', opts.domainType,
-    '--domain-identifier', opts.domainIdentifier,
-    '--source', from,
-    '--destination', to,
+    '--domain-type',
+    opts.domainType,
+    '--domain-identifier',
+    opts.domainIdentifier,
+    '--source',
+    from,
+    '--destination',
+    to,
   ];
 
   if (opts.username) {

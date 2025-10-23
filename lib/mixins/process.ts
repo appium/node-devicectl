@@ -1,16 +1,13 @@
 import _ from 'lodash';
-import type { LaunchAppOptions } from '../types';
-import type { Devicectl } from '../devicectl';
+import type {LaunchAppOptions} from '../types';
+import type {Devicectl} from '../devicectl';
 
 /**
  * Simulates memory warning for the process with the given PID
  */
-export async function sendMemoryWarning(
-  this: Devicectl,
-  pid: number | string
-): Promise<void> {
+export async function sendMemoryWarning(this: Devicectl, pid: number | string): Promise<void> {
   await this.execute(['device', 'process', 'sendMemoryWarning'], {
-    subcommandOptions: ['--pid', `${pid}`]
+    subcommandOptions: ['--pid', `${pid}`],
   });
 }
 
@@ -20,10 +17,10 @@ export async function sendMemoryWarning(
 export async function sendSignalToProcess(
   this: Devicectl,
   pid: number | string,
-  signal: number | string
+  signal: number | string,
 ): Promise<void> {
   await this.execute(['device', 'process', 'signal'], {
-    subcommandOptions: ['--signal', `${signal}`, '--pid', `${pid}`]
+    subcommandOptions: ['--signal', `${signal}`, '--pid', `${pid}`],
   });
 }
 
@@ -35,12 +32,9 @@ export async function sendSignalToProcess(
 export async function launchApp(
   this: Devicectl,
   bundleId: string,
-  opts: LaunchAppOptions = {}
+  opts: LaunchAppOptions = {},
 ): Promise<void> {
-  const {
-    env,
-    terminateExisting = false
-  } = opts;
+  const {env, terminateExisting = false} = opts;
 
   const subcommandOptions: string[] = [];
 
@@ -49,7 +43,10 @@ export async function launchApp(
   }
 
   if (!_.isEmpty(env)) {
-    subcommandOptions.push('--environment-variables', JSON.stringify(_.mapValues(env, (v) => _.toString(v))));
+    subcommandOptions.push(
+      '--environment-variables',
+      JSON.stringify(_.mapValues(env, (v) => _.toString(v))),
+    );
   }
 
   // The bundle id should be the last to apply arguments properly.
@@ -58,6 +55,6 @@ export async function launchApp(
 
   await this.execute(['device', 'process', 'launch'], {
     subcommandOptions,
-    asJson: false
+    asJson: false,
   });
 }

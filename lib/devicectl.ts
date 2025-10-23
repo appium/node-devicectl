@@ -1,10 +1,7 @@
-import { exec, SubProcess } from 'teen_process';
+import {exec, SubProcess} from 'teen_process';
 import _ from 'lodash';
 import logger from '@appium/logger';
-import type {
-  ExecuteOptions,
-  ExecuteResult,
-} from './types';
+import type {ExecuteOptions, ExecuteResult} from './types';
 import * as processMixins from './mixins/process';
 import * as infoMixins from './mixins/info';
 import * as copyMixins from './mixins/copy';
@@ -41,7 +38,7 @@ export class Devicectl {
    */
   async execute<T extends ExecuteOptions>(
     subcommand: string[],
-    opts?: T
+    opts?: T,
   ): Promise<ExecuteResult<T>> {
     const {
       logStdout = false,
@@ -51,14 +48,11 @@ export class Devicectl {
       timeout,
     } = opts ?? {};
 
-    const finalArgs = [
-      'devicectl', ...subcommand,
-      '--device', this.udid,
-    ];
+    const finalArgs = ['devicectl', ...subcommand, '--device', this.udid];
 
     if (subcommandOptions && !_.isEmpty(subcommandOptions)) {
       finalArgs.push(
-        ...(Array.isArray(subcommandOptions) ? subcommandOptions : [subcommandOptions])
+        ...(Array.isArray(subcommandOptions) ? subcommandOptions : [subcommandOptions]),
       );
     }
 
@@ -76,11 +70,7 @@ export class Devicectl {
         return result as ExecuteResult<T>;
       }
 
-      const result = await exec(
-        XCRUN,
-        finalArgs,
-        ...(_.isNumber(timeout) ? [{ timeout }] : []),
-      );
+      const result = await exec(XCRUN, finalArgs, ...(_.isNumber(timeout) ? [{timeout}] : []));
 
       if (logStdout) {
         logger.debug(LOG_TAG, `Command output: ${result.stdout}`);

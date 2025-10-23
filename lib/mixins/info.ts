@@ -1,20 +1,17 @@
-import type { AppInfo, ProcessInfo } from '../types';
-import type { Devicectl } from '../devicectl';
+import type {AppInfo, ProcessInfo} from '../types';
+import type {Devicectl} from '../devicectl';
 
 /**
  * Retrieves the list of installed apps from the device
  */
-export async function listApps(
-  this: Devicectl,
-  bundleId?: string
-): Promise<AppInfo[]> {
+export async function listApps(this: Devicectl, bundleId?: string): Promise<AppInfo[]> {
   const subcommandOptions = ['--include-all-apps'];
 
   if (bundleId) {
     subcommandOptions.push('--bundle-id', bundleId);
   }
 
-  const { stdout } = await this.execute(['device', 'info', 'apps'], {
+  const {stdout} = await this.execute(['device', 'info', 'apps'], {
     subcommandOptions,
   });
 
@@ -25,6 +22,6 @@ export async function listApps(
  * Lists running processes on the device
  */
 export async function listProcesses(this: Devicectl): Promise<ProcessInfo[]> {
-  const { stdout } = await this.execute(['device', 'info', 'processes']);
+  const {stdout} = await this.execute(['device', 'info', 'processes']);
   return JSON.parse(stdout).result.runningProcesses;
 }
