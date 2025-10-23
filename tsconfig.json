@@ -1,18 +1,12 @@
 {
-  "extends": "@appium/tsconfig/tsconfig",
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@appium/tsconfig/tsconfig.json",
   "compilerOptions": {
-    "outDir": "./build",
-    "rootDir": "./lib",
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true
+    "outDir": "build",
+    "checkJs": true,
+    "esModuleInterop": true,
+    "types": ["node"],
+    "strict": true
   },
-  "include": [
-    "lib/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "build",
-    "test"
-  ]
+  "include": ["lib"]
 }
