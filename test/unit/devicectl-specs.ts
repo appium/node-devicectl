@@ -63,4 +63,10 @@ describe('Devicectl', function () {
       expect(devicectl.launchApp).to.be.a('function');
     });
   });
+
+  describe('listDevices', function () {
+    it('should be a function', function () {
+      expect(devicectl.listDevices).to.be.a('function');
+    });
+  });
 });

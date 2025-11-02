@@ -5,6 +5,7 @@ import type {ExecuteOptions, ExecuteResult} from './types';
 import * as processMixins from './mixins/process';
 import * as infoMixins from './mixins/info';
 import * as copyMixins from './mixins/copy';
+import * as listMixins from './mixins/list';
 
 const XCRUN = 'xcrun';
 const LOG_TAG = 'Devicectl';
@@ -44,11 +45,12 @@ export class Devicectl {
       logStdout = false,
       asynchronous = false,
       asJson = true,
+      noDevice = false,
       subcommandOptions,
       timeout,
     } = opts ?? {};
 
-    const finalArgs = ['devicectl', ...subcommand, '--device', this.udid];
+    const finalArgs = ['devicectl', ...subcommand, ...(noDevice ? [] : ['--device', this.udid])];
 
     if (subcommandOptions && !_.isEmpty(subcommandOptions)) {
       finalArgs.push(
@@ -85,8 +87,12 @@ export class Devicectl {
   sendMemoryWarning = processMixins.sendMemoryWarning;
   sendSignalToProcess = processMixins.sendSignalToProcess;
   launchApp = processMixins.launchApp;
+
   listProcesses = infoMixins.listProcesses;
   listApps = infoMixins.listApps;
+
   listFiles = copyMixins.listFiles;
   pullFile = copyMixins.pullFile;
+
+  listDevices = listMixins.listDevices;
 }
