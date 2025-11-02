@@ -1,3 +1,9 @@
+## [1.1.0](https://github.com/appium/node-devicectl/compare/v1.0.1...v1.1.0) (2025-11-02)
+
+### Features
+
+* Add a possibility to list connected devices ([#3](https://github.com/appium/node-devicectl/issues/3)) ([ffce717](https://github.com/appium/node-devicectl/commit/ffce717c46d314f221bbc33b4b4ad363562b7c3c))
+
 ## [1.0.1](https://github.com/appium/node-devicectl/compare/v1.0.0...v1.0.1) (2025-10-23)
 
 ### Miscellaneous Chores
