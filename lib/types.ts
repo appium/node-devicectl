@@ -42,13 +42,25 @@ export interface AppInfo {
  * Options for executing devicectl commands
  */
 export interface ExecuteOptions {
-  /** Whether to add the --device option to the actual devicectl command */
+  /**
+   * Whether to add the --device option to the actual devicectl command
+   * @default false
+   */
   noDevice?: boolean;
-  /** Whether to log stdout output */
+  /**
+   * Whether to log stdout output
+   * @default false
+   */
   logStdout?: boolean;
-  /** Whether to return JSON output */
+  /**
+   * Whether to return JSON output
+   * @default true
+   */
   asJson?: boolean;
-  /** Whether to run the command asynchronously */
+  /**
+   * Whether to run the command asynchronously
+   * @default false
+   */
   asynchronous?: boolean;
   /** Additional subcommand options */
   subcommandOptions?: string[] | string;
