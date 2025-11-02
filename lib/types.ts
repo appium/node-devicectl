@@ -165,10 +165,10 @@ export interface ConnectionProperties {
   isMobileDeviceOnly: boolean;
   /** The last connection date in ISO format
    * @example "2025-01-01T12:00:00.000Z" */
-  lastConnectionDate: string;
+  lastConnectionDate?: string;
   /** List of local hostnames
    * @example ["MyDevice.coredevice.local", "ABCD1234-5678-90EF-GHIJ-KLMNOPQRSTUV.coredevice.local"] */
-  localHostnames: string[];
+  localHostnames?: string[];
   /** The pairing state
    * @example "paired" */
   pairingState: string;
@@ -177,16 +177,16 @@ export interface ConnectionProperties {
   potentialHostnames: string[];
   /** The transport type
    * @example "wired" */
-  transportType: string;
+  transportType?: string;
   /** The tunnel IP address
    * @example "fdda:f9b3:f5d9::1" */
-  tunnelIPAddress: string;
+  tunnelIPAddress?: string;
   /** The tunnel state
    * @example "connected" */
   tunnelState: string;
   /** The tunnel transport protocol
    * @example "tcp" */
-  tunnelTransportProtocol: string;
+  tunnelTransportProtocol?: string;
 }
 
 /**
@@ -195,22 +195,22 @@ export interface ConnectionProperties {
 export interface DeviceProperties {
   /** The boot state
    * @example "booted" */
-  bootState: string;
+  bootState?: string;
   /** Whether booted from snapshot
    * @example true */
-  bootedFromSnapshot: boolean;
+  bootedFromSnapshot?: boolean;
   /** The booted snapshot name
    * @example "com.apple.os.update-ABCDEF1234567890" */
   bootedSnapshotName?: string;
   /** Whether DDI services are available
    * @example true */
-  ddiServicesAvailable: boolean;
+  ddiServicesAvailable?: boolean;
   /** The developer mode status
    * @example "enabled" */
-  developerModeStatus: string;
+  developerModeStatus?: string;
   /** Whether has internal OS build
    * @example false */
-  hasInternalOSBuild: boolean;
+  hasInternalOSBuild?: boolean;
   /** The device name
    * @example "My iPhone" */
   name: string;
@@ -222,13 +222,13 @@ export interface DeviceProperties {
   osVersionNumber: string;
   /** Whether root file system is writable
    * @example false */
-  rootFileSystemIsWritable: boolean;
+  rootFileSystemIsWritable?: boolean;
   /** The screen viewing URL
    * @example "devices://device/open?id=ABCD1234-5678-90EF-GHIJ-KLMNOPQRSTUV" */
-  screenViewingURL: string;
+  screenViewingURL?: string;
   /** Whether supports checked allocations
    * @example false */
-  supportsCheckedAllocations: boolean;
+  supportsCheckedAllocations?: boolean;
 }
 
 /**
@@ -249,34 +249,34 @@ export interface HardwareProperties {
   hardwareModel: string;
   /** The internal storage capacity in bytes
    * @example 128000000000 */
-  internalStorageCapacity: number;
+  internalStorageCapacity?: number;
   /** Whether is production fused
    * @example true */
-  isProductionFused: boolean;
+  isProductionFused?: boolean;
   /** The marketing name
    * @example "iPhone 15" */
-  marketingName: string;
+  marketingName?: string;
   /** The platform
-   * @example "iOS" */
+   * @example "iOS", "tvOS" */
   platform: string;
   /** The product type
    * @example "iPhone16,1" */
   productType: string;
   /** The reality type (physical or simulator)
    * @example "physical" */
-  reality: string;
+  reality?: string;
   /** The serial number
    * @example "ABC1234XYZ" */
-  serialNumber: string;
+  serialNumber?: string;
   /** List of supported CPU types
    * @example [{ name: "arm64e", subType: 2, type: 16777228 }, { name: "arm64", subType: 0, type: 16777228 }] */
-  supportedCPUTypes: CPUType[];
+  supportedCPUTypes?: CPUType[];
   /** List of supported device families
-   * @example [1, 2] */
+   * @example [1, 2], [3] */
   supportedDeviceFamilies: number[];
   /** The thinning product type
    * @example "iPhone16,1" */
-  thinningProductType: string;
+  thinningProductType?: string;
   /** The UDID
    * @example "00000000-0000000000000000" */
   udid: string;
