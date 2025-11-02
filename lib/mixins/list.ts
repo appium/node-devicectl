@@ -3,7 +3,7 @@ import type {Devicectl} from '../devicectl';
 
 /**
  * Retrieves the list of connected device infos.
- * Mught be empty if no devices are connected.
+ * Might be empty if no devices are connected.
  */
 export async function listDevices(this: Devicectl): Promise<DeviceInfo[]> {
   const {stdout} = await this.execute(['list', 'devices'], {
