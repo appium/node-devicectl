@@ -43,7 +43,7 @@ export interface AppInfo {
  */
 export interface ExecuteOptions {
   /**
-   * Whether to add the --device option to the actual devicectl command
+   * Whether to drop the --device option from the actual devicectl command
    * @default false
    */
   noDevice?: boolean;
