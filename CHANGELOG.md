@@ -1,3 +1,9 @@
+## [1.1.1](https://github.com/appium/node-devicectl/compare/v1.1.0...v1.1.1) (2025-11-15)
+
+### Miscellaneous Chores
+
+* publish via trusted publisher ([#4](https://github.com/appium/node-devicectl/issues/4)) ([13e16ae](https://github.com/appium/node-devicectl/commit/13e16ae0d3103ac13bbbe51447c0a9bda6c0b25b))
+
 ## [1.1.0](https://github.com/appium/node-devicectl/compare/v1.0.1...v1.1.0) (2025-11-02)
 
 ### Features
