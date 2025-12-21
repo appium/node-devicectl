@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/appium/node-devicectl/compare/v1.1.1...v1.1.2) (2025-12-21)
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump @types/node from 24.10.4 to 25.0.3 ([#9](https://github.com/appium/node-devicectl/issues/9)) ([d1ba827](https://github.com/appium/node-devicectl/commit/d1ba8276bdc34876782c5eeb74902d80f8613cfc))
+* **deps:** bump actions/setup-node from 3 to 6 ([#6](https://github.com/appium/node-devicectl/issues/6)) ([fac6739](https://github.com/appium/node-devicectl/commit/fac6739cc822babca52aea3a28eea24955009d9f))
+
 ## [1.1.1](https://github.com/appium/node-devicectl/compare/v1.1.0...v1.1.1) (2025-11-15)
 
 ### Miscellaneous Chores
