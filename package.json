@@ -36,7 +36,7 @@
   "dependencies": {
     "@appium/logger": "^2.0.0-rc.1",
     "lodash": "^4.2.1",
-    "teen_process": "^3.0.0"
+    "teen_process": "^4.0.4"
   },
   "scripts": {
     "build": "tsc -b",
@@ -64,7 +64,6 @@
     "@types/lodash": "^4.14.196",
     "@types/mocha": "^10.0.1",
     "@types/node": "^25.0.3",
-    "@types/teen_process": "^2.0.2",
     "chai": "^6.0.0",
     "chai-as-promised": "^8.0.0",
     "conventional-changelog-conventionalcommits": "^9.0.0",
