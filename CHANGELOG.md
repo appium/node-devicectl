@@ -1,3 +1,9 @@
+## [1.1.3](https://github.com/appium/node-devicectl/compare/v1.1.2...v1.1.3) (2025-12-21)
+
+### Miscellaneous Chores
+
+* bump teen_process ([#10](https://github.com/appium/node-devicectl/issues/10)) ([483224a](https://github.com/appium/node-devicectl/commit/483224a9f81a4ed3e29d8f1779d73d05eae4aa1a))
+
 ## [1.1.2](https://github.com/appium/node-devicectl/compare/v1.1.1...v1.1.2) (2025-12-21)
 
 ### Miscellaneous Chores
