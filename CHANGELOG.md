@@ -1,3 +1,9 @@
+## [1.1.4](https://github.com/appium/node-devicectl/compare/v1.1.3...v1.1.4) (2026-01-23)
+
+### Miscellaneous Chores
+
+* Exclude tests from published dist ([4e88ea9](https://github.com/appium/node-devicectl/commit/4e88ea91258f37dd56d50ad1c422029bdb3b1fe9))
+
 ## [1.1.3](https://github.com/appium/node-devicectl/compare/v1.1.2...v1.1.3) (2025-12-21)
 
 ### Miscellaneous Chores
