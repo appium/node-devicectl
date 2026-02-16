@@ -1,5 +1,5 @@
-import { expect } from 'chai';
-import { Devicectl } from '../../lib/devicectl';
+import {expect} from 'chai';
+import {Devicectl} from '../../lib/devicectl';
 
 describe('Devicectl', function () {
   let devicectl: Devicectl;
