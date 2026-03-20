@@ -36,7 +36,7 @@
   "dependencies": {
     "@appium/logger": "^2.0.0-rc.1",
     "lodash": "^4.2.1",
-    "teen_process": "^4.0.4"
+    "teen_process": "^4.1.0"
   },
   "scripts": {
     "build": "tsc -b",
