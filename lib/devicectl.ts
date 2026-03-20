@@ -68,9 +68,8 @@ export class Devicectl {
       finalArgs.push('--quiet', '--json-output', '-');
     }
 
-    const userOpts = runAsNonRootWhenSudo && this.sudoUser
-      ? this.sudoUser ?? undefined
-      : undefined;
+    const userOpts =
+      runAsNonRootWhenSudo && this.sudoUser ? (this.sudoUser ?? undefined) : undefined;
     const cmdStr = [XCRUN, ...finalArgs].map((arg) => `"${arg}"`).join(' ');
     logger.debug(LOG_TAG, `Executing ${cmdStr}`);
 

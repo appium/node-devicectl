@@ -3,7 +3,8 @@ import {Devicectl} from '../../lib/devicectl';
 
 describe('manual sudo execution e2e', function () {
   it('runs devicectl as original non-root user under sudo', async function () {
-    if (process.env.CI ||
+    if (
+      process.env.CI ||
       process.platform !== 'darwin' ||
       !process.geteuid ||
       process.geteuid() !== 0 ||
