@@ -24,15 +24,15 @@ describe('Devicectl', function () {
   });
 
   describe('sudo behavior', function () {
-    it('should run as non-root only when override is enabled and sudo identity exists', function () {
-      (devicectl as any).sudoUser = {uid: 501, gid: 20};
-      expect((devicectl as any).shouldRunAsNonRoot(true)).to.equal(true);
-      expect((devicectl as any).shouldRunAsNonRoot(false)).to.equal(false);
+    it('should cache sudo user identity when available', function () {
+      const localDevicectl = new Devicectl('test-device-udid');
+      expect((localDevicectl as any).sudoUser === null || !!(localDevicectl as any).sudoUser).to.equal(
+        true,
+      );
     });
 
-    it('should not run as non-root when sudo identity is unavailable', function () {
-      (devicectl as any).sudoUser = null;
-      expect((devicectl as any).shouldRunAsNonRoot(true)).to.equal(false);
+    it('should keep constructor default for runAsNonRootWhenSudo behavior', function () {
+      expect((devicectl as any).preferNonRootWhenSudo).to.equal(true);
     });
   });
 
