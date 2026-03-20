@@ -1,3 +1,9 @@
+## [1.1.5](https://github.com/appium/node-devicectl/compare/v1.1.4...v1.1.5) (2026-03-20)
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump @appium/eslint-config-appium-ts ([#13](https://github.com/appium/node-devicectl/issues/13)) ([22efd79](https://github.com/appium/node-devicectl/commit/22efd7972dc2d99ec30e77f423d08da05758b451))
+
 ## [1.1.4](https://github.com/appium/node-devicectl/compare/v1.1.3...v1.1.4) (2026-01-23)
 
 ### Miscellaneous Chores
