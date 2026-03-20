@@ -12,6 +12,28 @@ describe('Devicectl', function () {
     it('should create a Devicectl instance with the provided UDID and default logger', function () {
       expect(devicectl.udid).to.equal('test-device-udid');
     });
+
+    it('should enable non-root sudo execution by default', function () {
+      expect((devicectl as any).preferNonRootWhenSudo).to.equal(true);
+    });
+
+    it('should allow disabling non-root sudo execution in constructor options', function () {
+      const localDevicectl = new Devicectl('test-device-udid', {preferNonRootWhenSudo: false});
+      expect((localDevicectl as any).preferNonRootWhenSudo).to.equal(false);
+    });
+  });
+
+  describe('sudo behavior', function () {
+    it('should run as non-root only when override is enabled and sudo identity exists', function () {
+      (devicectl as any).sudoUser = {uid: 501, gid: 20};
+      expect((devicectl as any).shouldRunAsNonRoot(true)).to.equal(true);
+      expect((devicectl as any).shouldRunAsNonRoot(false)).to.equal(false);
+    });
+
+    it('should not run as non-root when sudo identity is unavailable', function () {
+      (devicectl as any).sudoUser = null;
+      expect((devicectl as any).shouldRunAsNonRoot(true)).to.equal(false);
+    });
   });
 
   describe('execute', function () {

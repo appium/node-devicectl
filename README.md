@@ -30,6 +30,25 @@ await devicectl.launchApp('com.example.app', {
 });
 ```
 
+When Node is running under `sudo`, `node-devicectl` runs `xcrun devicectl` as the original
+non-root user by default (`SUDO_UID`/`SUDO_GID`) to avoid CoreDevice provider lookup errors.
+
+You can disable this globally via constructor options:
+
+```typescript
+const devicectl = new Devicectl('device-udid', {
+  preferNonRootWhenSudo: false,
+});
+```
+
+Or override for a single command:
+
+```typescript
+await devicectl.execute(['device', 'info'], {
+  runAsNonRootWhenSudo: false,
+});
+```
+
 ## Requirements
 
 - Xcode 15+
