@@ -66,6 +66,23 @@ export interface ExecuteOptions {
   subcommandOptions?: string[] | string;
   /** Timeout in milliseconds */
   timeout?: number;
+  /**
+   * Whether to run as the original non-root user when current process is running via sudo
+   *
+   * If not set, this falls back to `DevicectlOptions.preferNonRootWhenSudo`.
+   */
+  runAsNonRootWhenSudo?: boolean;
+}
+
+/**
+ * Options for creating a Devicectl instance
+ */
+export interface DevicectlOptions {
+  /**
+   * Whether to run `devicectl` as the original non-root user when parent process runs via sudo
+   * @default true
+   */
+  preferNonRootWhenSudo?: boolean;
 }
 
 /**

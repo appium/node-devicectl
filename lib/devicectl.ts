@@ -1,7 +1,7 @@
 import {exec, SubProcess} from 'teen_process';
 import _ from 'lodash';
 import logger from '@appium/logger';
-import type {ExecuteOptions, ExecuteResult} from './types';
+import type {DevicectlOptions, ExecuteOptions, ExecuteResult} from './types';
 import * as processMixins from './mixins/process';
 import * as infoMixins from './mixins/info';
 import * as copyMixins from './mixins/copy';
@@ -9,6 +9,7 @@ import * as listMixins from './mixins/list';
 
 const XCRUN = 'xcrun';
 const LOG_TAG = 'Devicectl';
+type SudoUser = {uid: number; gid: number};
 
 /**
  * Node.js wrapper around Apple's devicectl tool
@@ -20,14 +21,18 @@ const LOG_TAG = 'Devicectl';
 export class Devicectl {
   /** The unique device identifier */
   public readonly udid: string;
+  private readonly preferNonRootWhenSudo: boolean;
+  private readonly sudoUser: SudoUser | null;
 
   /**
    * Creates a new Devicectl instance
    *
    * @param udid - The unique device identifier
    */
-  constructor(udid: string) {
+  constructor(udid: string, opts?: DevicectlOptions) {
     this.udid = udid;
+    this.preferNonRootWhenSudo = opts?.preferNonRootWhenSudo ?? true;
+    this.sudoUser = this.resolveSudoUser();
   }
 
   /**
@@ -48,6 +53,7 @@ export class Devicectl {
       noDevice = false,
       subcommandOptions,
       timeout,
+      runAsNonRootWhenSudo = this.preferNonRootWhenSudo,
     } = opts ?? {};
 
     const finalArgs = ['devicectl', ...subcommand, ...(noDevice ? [] : ['--device', this.udid])];
@@ -62,17 +68,22 @@ export class Devicectl {
       finalArgs.push('--quiet', '--json-output', '-');
     }
 
+    const userOpts = runAsNonRootWhenSudo && this.sudoUser ? this.sudoUser : undefined;
     const cmdStr = [XCRUN, ...finalArgs].map((arg) => `"${arg}"`).join(' ');
     logger.debug(LOG_TAG, `Executing ${cmdStr}`);
 
     try {
       if (asynchronous) {
-        const result = new SubProcess(XCRUN, finalArgs);
+        const result = new SubProcess(XCRUN, finalArgs, userOpts);
         await result.start(0);
         return result as ExecuteResult<T>;
       }
 
-      const result = await exec(XCRUN, finalArgs, ...(_.isNumber(timeout) ? [{timeout}] : []));
+      const execOpts = {
+        ...userOpts,
+        ...(_.isNumber(timeout) ? {timeout} : {}),
+      };
+      const result = await exec(XCRUN, finalArgs, execOpts);
 
       if (logStdout) {
         logger.debug(LOG_TAG, `Command output: ${result.stdout}`);
@@ -95,4 +106,17 @@ export class Devicectl {
   pullFile = copyMixins.pullFile;
 
   listDevices = listMixins.listDevices;
+
+  private resolveSudoUser(): SudoUser | null {
+    if (!process.geteuid || process.geteuid() !== 0) {
+      return null;
+    }
+
+    const uid = Number(process.env.SUDO_UID);
+    const gid = Number(process.env.SUDO_GID);
+    if (!Number.isInteger(uid) || !Number.isInteger(gid)) {
+      return null;
+    }
+    return {uid, gid};
+  }
 }
