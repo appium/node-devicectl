@@ -1,3 +1,9 @@
+## [1.2.0](https://github.com/appium/node-devicectl/compare/v1.1.5...v1.2.0) (2026-03-20)
+
+### Features
+
+* Default to execution as non-root ([#14](https://github.com/appium/node-devicectl/issues/14)) ([04c75d5](https://github.com/appium/node-devicectl/commit/04c75d5f713d821fe87305d9772b893ff3183084))
+
 ## [1.1.5](https://github.com/appium/node-devicectl/compare/v1.1.4...v1.1.5) (2026-03-20)
 
 ### Miscellaneous Chores
