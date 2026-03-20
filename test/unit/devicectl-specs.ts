@@ -26,9 +26,9 @@ describe('Devicectl', function () {
   describe('sudo behavior', function () {
     it('should cache sudo user identity when available', function () {
       const localDevicectl = new Devicectl('test-device-udid');
-      expect((localDevicectl as any).sudoUser === null || !!(localDevicectl as any).sudoUser).to.equal(
-        true,
-      );
+      expect(
+        (localDevicectl as any).sudoUser === null || !!(localDevicectl as any).sudoUser,
+      ).to.equal(true);
     });
 
     it('should keep constructor default for runAsNonRootWhenSudo behavior', function () {
