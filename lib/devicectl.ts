@@ -9,6 +9,7 @@ import * as listMixins from './mixins/list';
 
 const XCRUN = 'xcrun';
 const LOG_TAG = 'Devicectl';
+type SudoUser = {uid: number; gid: number};
 
 /**
  * Node.js wrapper around Apple's devicectl tool
@@ -21,7 +22,7 @@ export class Devicectl {
   /** The unique device identifier */
   public readonly udid: string;
   private readonly preferNonRootWhenSudo: boolean;
-  private readonly sudoUser: {uid: number; gid: number} | null;
+  private readonly sudoUser: SudoUser | null;
 
   /**
    * Creates a new Devicectl instance
@@ -67,8 +68,10 @@ export class Devicectl {
       finalArgs.push('--quiet', '--json-output', '-');
     }
 
+    const userOpts = runAsNonRootWhenSudo && this.sudoUser
+      ? this.sudoUser ?? undefined
+      : undefined;
     const cmdStr = [XCRUN, ...finalArgs].map((arg) => `"${arg}"`).join(' ');
-    const userOpts = this.shouldRunAsNonRoot(runAsNonRootWhenSudo) && this.sudoUser ? this.sudoUser : {};
     logger.debug(LOG_TAG, `Executing ${cmdStr}`);
 
     try {
@@ -106,7 +109,7 @@ export class Devicectl {
 
   listDevices = listMixins.listDevices;
 
-  private resolveSudoUser(): {uid: number; gid: number} | null {
+  private resolveSudoUser(): SudoUser | null {
     if (!process.geteuid || process.geteuid() !== 0) {
       return null;
     }
@@ -117,9 +120,5 @@ export class Devicectl {
       return null;
     }
     return {uid, gid};
-  }
-
-  private shouldRunAsNonRoot(runAsNonRootWhenSudo: boolean): boolean {
-    return runAsNonRootWhenSudo && !!this.sudoUser;
   }
 }
