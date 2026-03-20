@@ -69,7 +69,7 @@ export class Devicectl {
     }
 
     const userOpts =
-      runAsNonRootWhenSudo && this.sudoUser ? (this.sudoUser ?? undefined) : undefined;
+      runAsNonRootWhenSudo && this.sudoUser ? this.sudoUser : undefined;
     const cmdStr = [XCRUN, ...finalArgs].map((arg) => `"${arg}"`).join(' ');
     logger.debug(LOG_TAG, `Executing ${cmdStr}`);
 

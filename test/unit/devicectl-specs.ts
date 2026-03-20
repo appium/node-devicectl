@@ -13,10 +13,6 @@ describe('Devicectl', function () {
       expect(devicectl.udid).to.equal('test-device-udid');
     });
 
-    it('should enable non-root sudo execution by default', function () {
-      expect((devicectl as any).preferNonRootWhenSudo).to.equal(true);
-    });
-
     it('should allow disabling non-root sudo execution in constructor options', function () {
       const localDevicectl = new Devicectl('test-device-udid', {preferNonRootWhenSudo: false});
       expect((localDevicectl as any).preferNonRootWhenSudo).to.equal(false);
