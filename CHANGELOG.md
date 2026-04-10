@@ -1,3 +1,9 @@
+## [1.2.1](https://github.com/appium/node-devicectl/compare/v1.2.0...v1.2.1) (2026-04-10)
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump typescript from 5.9.3 to 6.0.2 ([#15](https://github.com/appium/node-devicectl/issues/15)) ([9b60022](https://github.com/appium/node-devicectl/commit/9b6002244310ffc318c101cebcc05c897b8f3154))
+
 ## [1.2.0](https://github.com/appium/node-devicectl/compare/v1.1.5...v1.2.0) (2026-03-20)
 
 ### Features
