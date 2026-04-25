@@ -1,3 +1,9 @@
+## [1.3.0](https://github.com/appium/node-devicectl/compare/v1.2.1...v1.3.0) (2026-04-25)
+
+### Features
+
+* Ditch lodash ([#16](https://github.com/appium/node-devicectl/issues/16)) ([0370889](https://github.com/appium/node-devicectl/commit/03708896fca2b4fd706e7665f64c6c7f522be99c))
+
 ## [1.2.1](https://github.com/appium/node-devicectl/compare/v1.2.0...v1.2.1) (2026-04-10)
 
 ### Miscellaneous Chores
