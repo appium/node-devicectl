@@ -1,5 +1,4 @@
 import {exec, SubProcess} from 'teen_process';
-import _ from 'lodash';
 import logger from '@appium/logger';
 import type {DevicectlOptions, ExecuteOptions, ExecuteResult} from './types';
 import * as processMixins from './mixins/process';
@@ -21,6 +20,19 @@ type SudoUser = {uid: number; gid: number};
 export class Devicectl {
   /** The unique device identifier */
   public readonly udid: string;
+
+  sendMemoryWarning = processMixins.sendMemoryWarning;
+  sendSignalToProcess = processMixins.sendSignalToProcess;
+  launchApp = processMixins.launchApp;
+
+  listProcesses = infoMixins.listProcesses;
+  listApps = infoMixins.listApps;
+
+  listFiles = copyMixins.listFiles;
+  pullFile = copyMixins.pullFile;
+
+  listDevices = listMixins.listDevices;
+
   private readonly preferNonRootWhenSudo: boolean;
   private readonly sudoUser: SudoUser | null;
 
@@ -58,7 +70,7 @@ export class Devicectl {
 
     const finalArgs = ['devicectl', ...subcommand, ...(noDevice ? [] : ['--device', this.udid])];
 
-    if (subcommandOptions && !_.isEmpty(subcommandOptions)) {
+    if (subcommandOptions && subcommandOptions.length > 0) {
       finalArgs.push(
         ...(Array.isArray(subcommandOptions) ? subcommandOptions : [subcommandOptions]),
       );
@@ -81,7 +93,7 @@ export class Devicectl {
 
       const execOpts = {
         ...userOpts,
-        ...(_.isNumber(timeout) ? {timeout} : {}),
+        ...(typeof timeout === 'number' ? {timeout} : {}),
       };
       const result = await exec(XCRUN, finalArgs, execOpts);
 
@@ -94,18 +106,6 @@ export class Devicectl {
       throw new Error(`'${cmdStr}' failed. Original error: ${e.stderr || e.stdout || e.message}`);
     }
   }
-
-  sendMemoryWarning = processMixins.sendMemoryWarning;
-  sendSignalToProcess = processMixins.sendSignalToProcess;
-  launchApp = processMixins.launchApp;
-
-  listProcesses = infoMixins.listProcesses;
-  listApps = infoMixins.listApps;
-
-  listFiles = copyMixins.listFiles;
-  pullFile = copyMixins.pullFile;
-
-  listDevices = listMixins.listDevices;
 
   private resolveSudoUser(): SudoUser | null {
     if (!process.geteuid || process.geteuid() !== 0) {

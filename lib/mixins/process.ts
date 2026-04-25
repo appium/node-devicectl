@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import type {LaunchAppOptions} from '../types';
 import type {Devicectl} from '../devicectl';
 
@@ -42,10 +41,12 @@ export async function launchApp(
     subcommandOptions.push('--terminate-existing');
   }
 
-  if (!_.isEmpty(env)) {
+  if (env && Object.keys(env).length > 0) {
     subcommandOptions.push(
       '--environment-variables',
-      JSON.stringify(_.mapValues(env, (v) => _.toString(v))),
+      JSON.stringify(
+        Object.fromEntries(Object.entries(env).map(([key, value]) => [key, String(value)])),
+      ),
     );
   }
 
