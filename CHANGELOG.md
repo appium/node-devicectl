@@ -1,3 +1,9 @@
+## [1.3.1](https://github.com/appium/node-devicectl/compare/v1.3.0...v1.3.1) (2026-05-08)
+
+### Miscellaneous Chores
+
+* Enable strict TS mode ([#17](https://github.com/appium/node-devicectl/issues/17)) ([b8a6127](https://github.com/appium/node-devicectl/commit/b8a61277de3552cd96c3b38aeb8e255a27386bfa))
+
 ## [1.3.0](https://github.com/appium/node-devicectl/compare/v1.2.1...v1.3.0) (2026-04-25)
 
 ### Features
