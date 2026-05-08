@@ -103,7 +103,9 @@ export class Devicectl {
 
       return result as ExecuteResult<T>;
     } catch (e: any) {
-      throw new Error(`'${cmdStr}' failed. Original error: ${e.stderr || e.stdout || e.message}`);
+      throw new Error(`'${cmdStr}' failed. Original error: ${e.stderr || e.stdout || e.message}`, {
+        cause: e,
+      });
     }
   }
 
