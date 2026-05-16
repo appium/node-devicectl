@@ -1,3 +1,9 @@
+## [1.4.0](https://github.com/appium/node-devicectl/compare/v1.3.1...v1.4.0) (2026-05-16)
+
+### Features
+
+* Add API for app termination ([#18](https://github.com/appium/node-devicectl/issues/18)) ([20601e3](https://github.com/appium/node-devicectl/commit/20601e39e63176dc988d2ed02bd799b0f7c9ffeb))
+
 ## [1.3.1](https://github.com/appium/node-devicectl/compare/v1.3.0...v1.3.1) (2026-05-08)
 
 ### Miscellaneous Chores
