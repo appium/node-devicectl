@@ -1,5 +1,6 @@
 import {expect} from 'chai';
 import {Devicectl} from '../../lib/devicectl';
+import {appUrlToFilesystemPath, escapeProcessFilterValue} from '../../lib/mixins/process';
 
 describe('Devicectl', function () {
   let devicectl: Devicectl;
@@ -79,6 +80,54 @@ describe('Devicectl', function () {
   describe('launchApp', function () {
     it('should be a function', function () {
       expect(devicectl.launchApp).to.be.a('function');
+    });
+  });
+
+  describe('terminateApp', function () {
+    it('should be a function', function () {
+      expect(devicectl.terminateApp).to.be.a('function');
+    });
+
+    describe('appUrlToFilesystemPath', function () {
+      it('should strip the file:// prefix', function () {
+        expect(appUrlToFilesystemPath('file:///path/to/App.app')).to.equal('/path/to/App.app');
+      });
+
+      it('should strip a trailing slash', function () {
+        expect(appUrlToFilesystemPath('/path/to/App.app/')).to.equal('/path/to/App.app');
+      });
+
+      it('should strip both the file:// prefix and trailing slash', function () {
+        expect(appUrlToFilesystemPath('file:///private/var/App.app/')).to.equal(
+          '/private/var/App.app',
+        );
+      });
+
+      it('should leave paths without a file:// prefix or trailing slash unchanged', function () {
+        expect(appUrlToFilesystemPath('/path/to/App.app')).to.equal('/path/to/App.app');
+      });
+    });
+
+    describe('escapeProcessFilterValue', function () {
+      it('should leave values without special characters unchanged', function () {
+        expect(escapeProcessFilterValue('/path/to/App.app')).to.equal('/path/to/App.app');
+      });
+
+      it('should escape backslashes', function () {
+        expect(escapeProcessFilterValue(String.raw`path\with\slashes`)).to.equal(
+          String.raw`path\\with\\slashes`,
+        );
+      });
+
+      it('should escape double quotes', function () {
+        expect(escapeProcessFilterValue('path"with"quotes')).to.equal('path\\"with\\"quotes');
+      });
+
+      it('should escape backslashes and double quotes together', function () {
+        expect(escapeProcessFilterValue(String.raw`path\"mixed`)).to.equal(
+          String.raw`path\\\"mixed`,
+        );
+      });
     });
   });
 

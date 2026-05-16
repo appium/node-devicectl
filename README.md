@@ -28,6 +28,8 @@ await devicectl.launchApp('com.example.app', {
   env: { DEBUG: '1' },
   terminateExisting: true
 });
+await devicectl.terminateApp('com.example.app');
+await devicectl.terminateApp('com.example.app', { force: true });
 ```
 
 When Node is running under `sudo`, `node-devicectl` runs `xcrun devicectl` as the original

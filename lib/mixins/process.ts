@@ -1,4 +1,4 @@
-import type {LaunchAppOptions} from '../types';
+import type {LaunchAppOptions, ProcessInfo, TerminateAppOptions} from '../types';
 import type {Devicectl} from '../devicectl';
 
 /**
@@ -58,4 +58,67 @@ export async function launchApp(
     subcommandOptions,
     asJson: false,
   });
+}
+
+/**
+ * Terminates all running processes for the app with the given bundle identifier.
+ *
+ * Resolves the app's install path via {@link Devicectl.listApps}, finds matching
+ * processes with `devicectl device info processes --filter`, then terminates each
+ * via `devicectl device process terminate`.
+ *
+ * @returns `true` if at least one process was terminated, otherwise `false`
+ */
+export async function terminateApp(
+  this: Devicectl,
+  bundleId: string,
+  opts: TerminateAppOptions = {},
+): Promise<boolean> {
+  const apps = await this.listApps(bundleId);
+  if (apps.length === 0) {
+    return false;
+  }
+
+  const processes = await listProcessesForAppPath(this, appUrlToFilesystemPath(apps[0].url));
+  if (processes.length === 0) {
+    return false;
+  }
+
+  const {force = false} = opts;
+  const subcommandOptions: string[] = [];
+  if (force) {
+    subcommandOptions.push('--kill');
+  }
+
+  await Promise.all(
+    processes.map(({processIdentifier}) =>
+      this.execute(['device', 'process', 'terminate'], {
+        subcommandOptions: [...subcommandOptions, '--pid', `${processIdentifier}`],
+      }),
+    ),
+  );
+
+  return true;
+}
+
+/** Converts a devicectl app URL to a filesystem path for process filters. */
+export function appUrlToFilesystemPath(appUrl: string): string {
+  const path = appUrl.startsWith('file:') ? new URL(appUrl).pathname : appUrl;
+  return path.replace(/\/$/, '') || '/';
+}
+
+/** Escapes a value for use inside a devicectl process filter string. */
+export function escapeProcessFilterValue(value: string): string {
+  return value.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+}
+
+async function listProcessesForAppPath(
+  devicectl: Devicectl,
+  appPath: string,
+): Promise<ProcessInfo[]> {
+  const filter = `executable.path BEGINSWITH "${escapeProcessFilterValue(appPath)}"`;
+  const {stdout} = await devicectl.execute(['device', 'info', 'processes'], {
+    subcommandOptions: ['--filter', filter],
+  });
+  return JSON.parse(stdout).result.runningProcesses;
 }
