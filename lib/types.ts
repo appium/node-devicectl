@@ -127,6 +127,17 @@ export interface LaunchAppOptions {
 }
 
 /**
+ * Options for terminating an app
+ */
+export interface TerminateAppOptions {
+  /**
+   * Send SIGKILL instead of SIGTERM so the process cannot catch the signal
+   * @default false
+   */
+  force?: boolean;
+}
+
+/**
  * Result type for synchronous execution
  */
 export type SyncExecuteResult = TeenProcessExecResult<string>;

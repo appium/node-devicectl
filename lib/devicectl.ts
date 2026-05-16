@@ -24,6 +24,7 @@ export class Devicectl {
   sendMemoryWarning = processMixins.sendMemoryWarning;
   sendSignalToProcess = processMixins.sendSignalToProcess;
   launchApp = processMixins.launchApp;
+  terminateApp = processMixins.terminateApp;
 
   listProcesses = infoMixins.listProcesses;
   listApps = infoMixins.listApps;
