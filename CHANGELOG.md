@@ -1,3 +1,9 @@
+## [1.4.1](https://github.com/appium/node-devicectl/compare/v1.4.0...v1.4.1) (2026-07-02)
+
+### Miscellaneous Chores
+
+* **deps:** bump actions/checkout from 6 to 7 ([#19](https://github.com/appium/node-devicectl/issues/19)) ([afdc935](https://github.com/appium/node-devicectl/commit/afdc93554dbd876e0d385b9a26cdd95a8abcb1d7))
+
 ## [1.4.0](https://github.com/appium/node-devicectl/compare/v1.3.1...v1.4.0) (2026-05-16)
 
 ### Features
