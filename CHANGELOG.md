@@ -1,3 +1,9 @@
+## [1.4.3](https://github.com/appium/node-devicectl/compare/v1.4.2...v1.4.3) (2026-07-06)
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump @types/node from 25.9.4 to 26.1.0 ([#23](https://github.com/appium/node-devicectl/issues/23)) ([33e9b6a](https://github.com/appium/node-devicectl/commit/33e9b6ad7ddfb366abd15f9756e729fcea0947e4))
+
 ## [1.4.2](https://github.com/appium/node-devicectl/compare/v1.4.1...v1.4.2) (2026-07-06)
 
 ### Miscellaneous Chores
