@@ -21,7 +21,7 @@ describe('manual sudo execution e2e', function () {
       asJson: true,
     });
 
-    assert(typeof result.stdout === 'string');
-    assert(result.stdout.length > 0);
+    assert.strictEqual(typeof result.stdout, 'string');
+    assert.ok(result.stdout.length > 0);
   });
 });
