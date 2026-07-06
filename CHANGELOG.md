@@ -1,3 +1,9 @@
+## [1.4.2](https://github.com/appium/node-devicectl/compare/v1.4.1...v1.4.2) (2026-07-06)
+
+### Miscellaneous Chores
+
+* Drop mocha and chai ([#24](https://github.com/appium/node-devicectl/issues/24)) ([3674f25](https://github.com/appium/node-devicectl/commit/3674f254a6f4e31d9b7afeac4e72e552eb8e38cd))
+
 ## [1.4.1](https://github.com/appium/node-devicectl/compare/v1.4.0...v1.4.1) (2026-07-02)
 
 ### Miscellaneous Chores
