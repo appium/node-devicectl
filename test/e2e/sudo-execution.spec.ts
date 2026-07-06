@@ -1,8 +1,9 @@
-import {expect} from 'chai';
+import assert from 'node:assert/strict';
 import {Devicectl} from '../../lib/devicectl';
+import {describe, it, type TestContext} from 'node:test';
 
 describe('manual sudo execution e2e', function () {
-  it('runs devicectl as original non-root user under sudo', async function () {
+  it('runs devicectl as original non-root user under sudo', async function (ctx: TestContext) {
     if (
       process.env.CI ||
       process.platform !== 'darwin' ||
@@ -11,8 +12,7 @@ describe('manual sudo execution e2e', function () {
       !process.env.SUDO_UID ||
       !process.env.SUDO_GID
     ) {
-      this.skip();
-      return;
+      return ctx.skip();
     }
 
     const devicectl = new Devicectl('');
@@ -21,7 +21,7 @@ describe('manual sudo execution e2e', function () {
       asJson: true,
     });
 
-    expect(result.stdout).to.be.a('string');
-    expect(result.stdout.length).to.be.greaterThan(0);
+    assert(typeof result.stdout === 'string');
+    assert(result.stdout.length > 0);
   });
 });
