@@ -1,6 +1,7 @@
-import {expect} from 'chai';
+import assert from 'node:assert/strict';
 import {Devicectl} from '../../lib/devicectl';
 import {appUrlToFilesystemPath, escapeProcessFilterValue} from '../../lib/mixins/process';
+import {describe, it, beforeEach} from 'node:test';
 
 describe('Devicectl', function () {
   let devicectl: Devicectl;
@@ -11,25 +12,26 @@ describe('Devicectl', function () {
 
   describe('constructor', function () {
     it('should create a Devicectl instance with the provided UDID and default logger', function () {
-      expect(devicectl.udid).to.equal('test-device-udid');
+      assert.strictEqual(devicectl.udid, 'test-device-udid');
     });
 
     it('should allow disabling non-root sudo execution in constructor options', function () {
       const localDevicectl = new Devicectl('test-device-udid', {preferNonRootWhenSudo: false});
-      expect((localDevicectl as any).preferNonRootWhenSudo).to.equal(false);
+      assert.strictEqual((localDevicectl as any).preferNonRootWhenSudo, false);
     });
   });
 
   describe('sudo behavior', function () {
     it('should cache sudo user identity when available', function () {
       const localDevicectl = new Devicectl('test-device-udid');
-      expect(
+      assert.strictEqual(
         (localDevicectl as any).sudoUser === null || !!(localDevicectl as any).sudoUser,
-      ).to.equal(true);
+        true,
+      );
     });
 
     it('should keep constructor default for runAsNonRootWhenSudo behavior', function () {
-      expect((devicectl as any).preferNonRootWhenSudo).to.equal(true);
+      assert.strictEqual((devicectl as any).preferNonRootWhenSudo, true);
     });
   });
 
@@ -37,94 +39,97 @@ describe('Devicectl', function () {
     it('should throw an error when command execution fails', async function () {
       // This test would need to be mocked in a real implementation
       // For now, we'll just test that the method exists
-      expect(devicectl.execute).to.be.a('function');
+      assert.strictEqual(typeof devicectl.execute, 'function');
     });
   });
 
   describe('sendMemoryWarning', function () {
     it('should be a function', function () {
-      expect(devicectl.sendMemoryWarning).to.be.a('function');
+      assert.strictEqual(typeof devicectl.sendMemoryWarning, 'function');
     });
   });
 
   describe('listProcesses', function () {
     it('should be a function', function () {
-      expect(devicectl.listProcesses).to.be.a('function');
+      assert.strictEqual(typeof devicectl.listProcesses, 'function');
     });
   });
 
   describe('listFiles', function () {
     it('should be a function', function () {
-      expect(devicectl.listFiles).to.be.a('function');
+      assert.strictEqual(typeof devicectl.listFiles, 'function');
     });
   });
 
   describe('pullFile', function () {
     it('should be a function', function () {
-      expect(devicectl.pullFile).to.be.a('function');
+      assert.strictEqual(typeof devicectl.pullFile, 'function');
     });
   });
 
   describe('sendSignalToProcess', function () {
     it('should be a function', function () {
-      expect(devicectl.sendSignalToProcess).to.be.a('function');
+      assert.strictEqual(typeof devicectl.sendSignalToProcess, 'function');
     });
   });
 
   describe('listApps', function () {
     it('should be a function', function () {
-      expect(devicectl.listApps).to.be.a('function');
+      assert.strictEqual(typeof devicectl.listApps, 'function');
     });
   });
 
   describe('launchApp', function () {
     it('should be a function', function () {
-      expect(devicectl.launchApp).to.be.a('function');
+      assert.strictEqual(typeof devicectl.launchApp, 'function');
     });
   });
 
   describe('terminateApp', function () {
     it('should be a function', function () {
-      expect(devicectl.terminateApp).to.be.a('function');
+      assert.strictEqual(typeof devicectl.terminateApp, 'function');
     });
 
     describe('appUrlToFilesystemPath', function () {
       it('should strip the file:// prefix', function () {
-        expect(appUrlToFilesystemPath('file:///path/to/App.app')).to.equal('/path/to/App.app');
+        assert.strictEqual(appUrlToFilesystemPath('file:///path/to/App.app'), '/path/to/App.app');
       });
 
       it('should strip a trailing slash', function () {
-        expect(appUrlToFilesystemPath('/path/to/App.app/')).to.equal('/path/to/App.app');
+        assert.strictEqual(appUrlToFilesystemPath('/path/to/App.app/'), '/path/to/App.app');
       });
 
       it('should strip both the file:// prefix and trailing slash', function () {
-        expect(appUrlToFilesystemPath('file:///private/var/App.app/')).to.equal(
+        assert.strictEqual(
+          appUrlToFilesystemPath('file:///private/var/App.app/'),
           '/private/var/App.app',
         );
       });
 
       it('should leave paths without a file:// prefix or trailing slash unchanged', function () {
-        expect(appUrlToFilesystemPath('/path/to/App.app')).to.equal('/path/to/App.app');
+        assert.strictEqual(appUrlToFilesystemPath('/path/to/App.app'), '/path/to/App.app');
       });
     });
 
     describe('escapeProcessFilterValue', function () {
       it('should leave values without special characters unchanged', function () {
-        expect(escapeProcessFilterValue('/path/to/App.app')).to.equal('/path/to/App.app');
+        assert.strictEqual(escapeProcessFilterValue('/path/to/App.app'), '/path/to/App.app');
       });
 
       it('should escape backslashes', function () {
-        expect(escapeProcessFilterValue(String.raw`path\with\slashes`)).to.equal(
+        assert.strictEqual(
+          escapeProcessFilterValue(String.raw`path\with\slashes`),
           String.raw`path\\with\\slashes`,
         );
       });
 
       it('should escape double quotes', function () {
-        expect(escapeProcessFilterValue('path"with"quotes')).to.equal('path\\"with\\"quotes');
+        assert.strictEqual(escapeProcessFilterValue('path"with"quotes'), 'path\\"with\\"quotes');
       });
 
       it('should escape backslashes and double quotes together', function () {
-        expect(escapeProcessFilterValue(String.raw`path\"mixed`)).to.equal(
+        assert.strictEqual(
+          escapeProcessFilterValue(String.raw`path\"mixed`),
           String.raw`path\\\"mixed`,
         );
       });
@@ -133,7 +138,7 @@ describe('Devicectl', function () {
 
   describe('listDevices', function () {
     it('should be a function', function () {
-      expect(devicectl.listDevices).to.be.a('function');
+      assert.strictEqual(typeof devicectl.listDevices, 'function');
     });
   });
 });
