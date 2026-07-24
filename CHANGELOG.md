@@ -1,3 +1,13 @@
+## [2.0.0](https://github.com/appium/node-devicectl/compare/v1.4.3...v2.0.0) (2026-07-24)
+
+### ⚠ BREAKING CHANGES
+
+* Consumers using require('node-devicectl') muc import() — the package no longer ships a CommonJS entry
+
+### Features
+
+* Migrate the package to ESM ([#31](https://github.com/appium/node-devicectl/issues/31)) ([f83c598](https://github.com/appium/node-devicectl/commit/f83c59815592fea4c3775e4f0fdf887e0b9bbe67))
+
 ## [1.4.3](https://github.com/appium/node-devicectl/compare/v1.4.2...v1.4.3) (2026-07-06)
 
 ### Miscellaneous Chores
