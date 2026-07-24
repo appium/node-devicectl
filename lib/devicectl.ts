@@ -1,10 +1,10 @@
 import {exec, SubProcess} from 'teen_process';
-import logger from '@appium/logger';
-import type {DevicectlOptions, ExecuteOptions, ExecuteResult} from './types';
-import * as processMixins from './mixins/process';
-import * as infoMixins from './mixins/info';
-import * as copyMixins from './mixins/copy';
-import * as listMixins from './mixins/list';
+import {log as logger} from '@appium/logger';
+import type {DevicectlOptions, ExecuteOptions, ExecuteResult} from './types.js';
+import * as processMixins from './mixins/process.js';
+import * as infoMixins from './mixins/info.js';
+import * as copyMixins from './mixins/copy.js';
+import * as listMixins from './mixins/list.js';
 
 const XCRUN = 'xcrun';
 const LOG_TAG = 'Devicectl';

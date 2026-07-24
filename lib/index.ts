@@ -1,2 +1,2 @@
-export {Devicectl} from './devicectl';
-export type * from './types';
+export {Devicectl} from './devicectl.js';
+export type * from './types.js';
