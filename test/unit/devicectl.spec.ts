@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
-import {Devicectl} from '../../lib/devicectl';
-import {appUrlToFilesystemPath, escapeProcessFilterValue} from '../../lib/mixins/process';
+import {Devicectl} from '../../lib/devicectl.js';
+import {appUrlToFilesystemPath, escapeProcessFilterValue} from '../../lib/mixins/process.js';
 import {describe, it, beforeEach} from 'node:test';
 
 describe('Devicectl', function () {
