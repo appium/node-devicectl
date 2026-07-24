@@ -1,5 +1,5 @@
-import type {LaunchAppOptions, ProcessInfo, TerminateAppOptions} from '../types';
-import type {Devicectl} from '../devicectl';
+import type {LaunchAppOptions, ProcessInfo, TerminateAppOptions} from '../types.js';
+import type {Devicectl} from '../devicectl.js';
 
 /**
  * Simulates memory warning for the process with the given PID

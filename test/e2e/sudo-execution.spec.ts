@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {Devicectl} from '../../lib/devicectl';
+import {Devicectl} from '../../lib/devicectl.js';
 import {describe, it, type TestContext} from 'node:test';
 
 describe('manual sudo execution e2e', function () {

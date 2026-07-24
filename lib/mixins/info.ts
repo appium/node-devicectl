@@ -1,5 +1,5 @@
-import type {AppInfo, ProcessInfo} from '../types';
-import type {Devicectl} from '../devicectl';
+import type {AppInfo, ProcessInfo} from '../types.js';
+import type {Devicectl} from '../devicectl.js';
 
 /**
  * Retrieves the list of installed apps from the device

@@ -1,5 +1,5 @@
-import type {ListFilesOptions, PullFileOptions} from '../types';
-import type {Devicectl} from '../devicectl';
+import type {ListFilesOptions, PullFileOptions} from '../types.js';
+import type {Devicectl} from '../devicectl.js';
 
 /**
  * Lists files at a specified path on the device
