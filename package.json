@@ -2,6 +2,13 @@
   "name": "node-devicectl",
   "version": "2.0.1",
   "description": "Node.js wrapper around Apple's devicectl tool",
+  "keywords": [
+    "apple",
+    "device",
+    "devicectl",
+    "ios",
+    "xcode"
+  ],
   "bugs": {
     "url": "https://github.com/appium/node-devicectl/issues"
   },
@@ -57,12 +64,5 @@
   "engines": {
     "node": "^20.19.0 || ^22.12.0 || >=24.0.0",
     "npm": ">=10"
-  },
-  "tags": [
-    "apple",
-    "ios",
-    "devicectl",
-    "device",
-    "xcode"
-  ]
+  }
 }
