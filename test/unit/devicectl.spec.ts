@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
+import {describe, it, beforeEach} from 'node:test';
+
 import {Devicectl} from '../../lib/devicectl.js';
 import {appUrlToFilesystemPath, escapeProcessFilterValue} from '../../lib/mixins/process.js';
-import {describe, it, beforeEach} from 'node:test';
 
 describe('Devicectl', function () {
   let devicectl: Devicectl;
@@ -24,10 +25,7 @@ describe('Devicectl', function () {
   describe('sudo behavior', function () {
     it('should cache sudo user identity when available', function () {
       const localDevicectl = new Devicectl('test-device-udid');
-      assert.strictEqual(
-        (localDevicectl as any).sudoUser === null || !!(localDevicectl as any).sudoUser,
-        true,
-      );
+      assert.strictEqual((localDevicectl as any).sudoUser === null || !!(localDevicectl as any).sudoUser, true);
     });
 
     it('should keep constructor default for runAsNonRootWhenSudo behavior', function () {
@@ -100,10 +98,7 @@ describe('Devicectl', function () {
       });
 
       it('should strip both the file:// prefix and trailing slash', function () {
-        assert.strictEqual(
-          appUrlToFilesystemPath('file:///private/var/App.app/'),
-          '/private/var/App.app',
-        );
+        assert.strictEqual(appUrlToFilesystemPath('file:///private/var/App.app/'), '/private/var/App.app');
       });
 
       it('should leave paths without a file:// prefix or trailing slash unchanged', function () {
@@ -117,10 +112,7 @@ describe('Devicectl', function () {
       });
 
       it('should escape backslashes', function () {
-        assert.strictEqual(
-          escapeProcessFilterValue(String.raw`path\with\slashes`),
-          String.raw`path\\with\\slashes`,
-        );
+        assert.strictEqual(escapeProcessFilterValue(String.raw`path\with\slashes`), String.raw`path\\with\\slashes`);
       });
 
       it('should escape double quotes', function () {
@@ -128,10 +120,7 @@ describe('Devicectl', function () {
       });
 
       it('should escape backslashes and double quotes together', function () {
-        assert.strictEqual(
-          escapeProcessFilterValue(String.raw`path\"mixed`),
-          String.raw`path\\\"mixed`,
-        );
+        assert.strictEqual(escapeProcessFilterValue(String.raw`path\"mixed`), String.raw`path\\\"mixed`);
       });
     });
   });

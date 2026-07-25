@@ -1,5 +1,5 @@
-import type {ListFilesOptions, PullFileOptions} from '../types.js';
 import type {Devicectl} from '../devicectl.js';
+import type {ListFilesOptions, PullFileOptions} from '../types.js';
 
 /**
  * Lists files at a specified path on the device
@@ -30,12 +30,7 @@ export async function listFiles(
 /**
  * Pulls a file from the specified path on the device to a local file system
  */
-export async function pullFile(
-  this: Devicectl,
-  from: string,
-  to: string,
-  opts: PullFileOptions,
-): Promise<string> {
+export async function pullFile(this: Devicectl, from: string, to: string, opts: PullFileOptions): Promise<string> {
   const subcommandOptions = [
     '--domain-type',
     opts.domainType,

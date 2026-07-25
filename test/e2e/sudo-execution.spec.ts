@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
-import {Devicectl} from '../../lib/devicectl.js';
 import {describe, it, type TestContext} from 'node:test';
+
+import {Devicectl} from '../../lib/devicectl.js';
 
 describe('manual sudo execution e2e', function () {
   it('runs devicectl as original non-root user under sudo', async function (ctx: TestContext) {

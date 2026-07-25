@@ -1,5 +1,5 @@
-import type {DeviceInfo} from '../types.js';
 import type {Devicectl} from '../devicectl.js';
+import type {DeviceInfo} from '../types.js';
 
 /**
  * Retrieves the list of connected device infos.

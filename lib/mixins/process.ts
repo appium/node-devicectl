@@ -1,5 +1,5 @@
-import type {LaunchAppOptions, ProcessInfo, TerminateAppOptions} from '../types.js';
 import type {Devicectl} from '../devicectl.js';
+import type {LaunchAppOptions, ProcessInfo, TerminateAppOptions} from '../types.js';
 
 /**
  * Simulates memory warning for the process with the given PID
@@ -28,11 +28,7 @@ export async function sendSignalToProcess(
  * This method is over devicectl command, this it may take additional seconds to launch the app.
  * Please use via WDA or via appium-ios-device as primary method to launch app if possible.
  */
-export async function launchApp(
-  this: Devicectl,
-  bundleId: string,
-  opts: LaunchAppOptions = {},
-): Promise<void> {
+export async function launchApp(this: Devicectl, bundleId: string, opts: LaunchAppOptions = {}): Promise<void> {
   const {env, terminateExisting = false} = opts;
 
   const subcommandOptions: string[] = [];
@@ -44,9 +40,7 @@ export async function launchApp(
   if (env && Object.keys(env).length > 0) {
     subcommandOptions.push(
       '--environment-variables',
-      JSON.stringify(
-        Object.fromEntries(Object.entries(env).map(([key, value]) => [key, String(value)])),
-      ),
+      JSON.stringify(Object.fromEntries(Object.entries(env).map(([key, value]) => [key, String(value)]))),
     );
   }
 
@@ -112,10 +106,7 @@ export function escapeProcessFilterValue(value: string): string {
   return value.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
 }
 
-async function listProcessesForAppPath(
-  devicectl: Devicectl,
-  appPath: string,
-): Promise<ProcessInfo[]> {
+async function listProcessesForAppPath(devicectl: Devicectl, appPath: string): Promise<ProcessInfo[]> {
   const filter = `executable.path BEGINSWITH "${escapeProcessFilterValue(appPath)}"`;
   const {stdout} = await devicectl.execute(['device', 'info', 'processes'], {
     subcommandOptions: ['--filter', filter],
