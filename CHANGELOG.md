@@ -1,3 +1,9 @@
+## [2.1.0](https://github.com/appium/node-devicectl/compare/v2.0.1...v2.1.0) (2026-07-25)
+
+### Features
+
+* Integrate oxc and release configs ([#32](https://github.com/appium/node-devicectl/issues/32)) ([8ae2b64](https://github.com/appium/node-devicectl/commit/8ae2b64158923d287138488c2bd8503abd350c4b))
+
 ## [2.0.1](https://github.com/appium/node-devicectl/compare/v2.0.0...v2.0.1) (2026-07-25)
 
 ### Miscellaneous Chores
