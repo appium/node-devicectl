@@ -1,3 +1,9 @@
+## [2.0.1](https://github.com/appium/node-devicectl/compare/v2.0.0...v2.0.1) (2026-07-25)
+
+### Miscellaneous Chores
+
+* **deps:** bump actions/setup-node from 6 to 7 ([#28](https://github.com/appium/node-devicectl/issues/28)) ([299ee8b](https://github.com/appium/node-devicectl/commit/299ee8b641a574e2725c1b8820e46233837d7ea6))
+
 ## [2.0.0](https://github.com/appium/node-devicectl/compare/v1.4.3...v2.0.0) (2026-07-24)
 
 ### ⚠ BREAKING CHANGES
