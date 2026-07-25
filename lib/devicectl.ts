@@ -1,10 +1,11 @@
-import {exec, SubProcess} from 'teen_process';
 import {log as logger} from '@appium/logger';
-import type {DevicectlOptions, ExecuteOptions, ExecuteResult} from './types.js';
-import * as processMixins from './mixins/process.js';
-import * as infoMixins from './mixins/info.js';
+import {exec, SubProcess} from 'teen_process';
+
 import * as copyMixins from './mixins/copy.js';
+import * as infoMixins from './mixins/info.js';
 import * as listMixins from './mixins/list.js';
+import * as processMixins from './mixins/process.js';
+import type {DevicectlOptions, ExecuteOptions, ExecuteResult} from './types.js';
 
 const XCRUN = 'xcrun';
 const LOG_TAG = 'Devicectl';
@@ -55,10 +56,7 @@ export class Devicectl {
    * @param opts - Execution options
    * @returns Promise that resolves to the command result
    */
-  async execute<T extends ExecuteOptions>(
-    subcommand: string[],
-    opts?: T,
-  ): Promise<ExecuteResult<T>> {
+  async execute<T extends ExecuteOptions>(subcommand: string[], opts?: T): Promise<ExecuteResult<T>> {
     const {
       logStdout = false,
       asynchronous = false,
@@ -72,9 +70,7 @@ export class Devicectl {
     const finalArgs = ['devicectl', ...subcommand, ...(noDevice ? [] : ['--device', this.udid])];
 
     if (subcommandOptions && subcommandOptions.length > 0) {
-      finalArgs.push(
-        ...(Array.isArray(subcommandOptions) ? subcommandOptions : [subcommandOptions]),
-      );
+      finalArgs.push(...(Array.isArray(subcommandOptions) ? subcommandOptions : [subcommandOptions]));
     }
 
     if (asJson) {
