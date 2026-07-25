@@ -1,6 +1,6 @@
 {
   "name": "node-devicectl",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Node.js wrapper around Apple's devicectl tool",
   "bugs": {
     "url": "https://github.com/appium/node-devicectl/issues"
