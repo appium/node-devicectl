@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {describe, it, beforeEach} from 'node:test';
+import {afterEach, beforeEach, describe, it, mock} from 'node:test';
 
 import {Devicectl} from '../../lib/devicectl.js';
 import {appUrlToFilesystemPath, escapeProcessFilterValue} from '../../lib/mixins/process.js';
@@ -86,6 +86,87 @@ describe('Devicectl', function () {
   describe('terminateApp', function () {
     it('should be a function', function () {
       assert.strictEqual(typeof devicectl.terminateApp, 'function');
+    });
+
+    describe('finding the app process', function () {
+      const APP_URL = 'file:///private/var/containers/Bundle/Application/ABC/App.app/';
+      const APP_PATH = '/private/var/containers/Bundle/Application/ABC/App.app';
+      const PROCESSES = JSON.stringify({
+        result: {runningProcesses: [{processIdentifier: 42, executable: `${APP_URL}App`}]},
+      });
+
+      function unknownFieldError(field: string): Error {
+        return new Error(
+          `'xcrun devicectl device info processes' failed. Original error: ERROR: Unknown filter field '${field}'. ` +
+            '(com.apple.dt.CoreDeviceError error 28001 (0x6D61))',
+        );
+      }
+
+      function fakeDevicectl(knownFields: string[], failure?: Error) {
+        const filters: string[] = [];
+        const terminated: string[] = [];
+        mock.method(devicectl, 'execute', async (subcommand: string[], opts: {subcommandOptions: string[]}) => {
+          if (subcommand.join(' ') === 'device process terminate') {
+            terminated.push(opts.subcommandOptions[1]);
+            return {stdout: '{}'};
+          }
+          const filter = opts.subcommandOptions[1];
+          filters.push(filter);
+          if (failure) {
+            throw failure;
+          }
+          const field = filter.slice(0, filter.indexOf(' BEGINSWITH '));
+          if (!knownFields.includes(field)) {
+            throw unknownFieldError(field);
+          }
+          return {stdout: PROCESSES};
+        });
+        return {filters, terminated};
+      }
+
+      beforeEach(function () {
+        mock.method(devicectl, 'listApps', async () => [{url: APP_URL}]);
+      });
+
+      afterEach(function () {
+        mock.restoreAll();
+      });
+
+      it('should filter on ExecutablePath, which Xcode 27 accepts', async function () {
+        const {filters, terminated} = fakeDevicectl(['ExecutablePath']);
+
+        assert.strictEqual(await devicectl.terminateApp('com.example.app'), true);
+        assert.deepStrictEqual(filters, [`ExecutablePath BEGINSWITH "${APP_PATH}"`]);
+        assert.deepStrictEqual(terminated, ['42']);
+      });
+
+      it('should fall back to executable.path when devicectl does not know ExecutablePath', async function () {
+        const {filters, terminated} = fakeDevicectl(['executable.path']);
+
+        assert.strictEqual(await devicectl.terminateApp('com.example.app'), true);
+        assert.deepStrictEqual(filters, [
+          `ExecutablePath BEGINSWITH "${APP_PATH}"`,
+          `executable.path BEGINSWITH "${APP_PATH}"`,
+        ]);
+        assert.deepStrictEqual(terminated, ['42']);
+      });
+
+      it('should not retry when devicectl fails for any other reason', async function () {
+        const {filters} = fakeDevicectl(
+          [],
+          new Error("'xcrun devicectl device info processes' failed. Original error: ERROR: The device was not found."),
+        );
+
+        await assert.rejects(devicectl.terminateApp('com.example.app'), /The device was not found/);
+        assert.strictEqual(filters.length, 1);
+      });
+
+      it('should report the rejection when devicectl knows neither field', async function () {
+        const {filters} = fakeDevicectl([]);
+
+        await assert.rejects(devicectl.terminateApp('com.example.app'), /Unknown filter field 'executable\.path'/);
+        assert.strictEqual(filters.length, 2);
+      });
     });
 
     describe('appUrlToFilesystemPath', function () {
