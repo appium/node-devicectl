@@ -1,5 +1,8 @@
 # node-devicectl
 
+> **This repository has moved.** Development now continues in the [appium-ios monorepo](https://github.com/appium/appium-ios/tree/main/packages/devicectl).
+
+
 Node.js wrapper around Apple's `devicectl` tool, the command-line utility to control iOS devices. `devicectl` is run as a sub-command of xcrun and requires Xcode 15+ and iOS 17+.
 
 ## Installation
