@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {afterEach, beforeEach, describe, it, mock} from 'node:test';
 
 import {Devicectl} from '../../lib/devicectl.js';
-import {appUrlToFilesystemPath, escapeProcessFilterValue} from '../../lib/mixins/process.js';
+import {appUrlToFilesystemPath, escapeProcessFilterValue, executablePathField} from '../../lib/mixins/process.js';
 
 describe('Devicectl', function () {
   let devicectl: Devicectl;
@@ -95,33 +95,31 @@ describe('Devicectl', function () {
         result: {runningProcesses: [{processIdentifier: 42, executable: `${APP_URL}App`}]},
       });
 
-      function unknownFieldError(field: string): Error {
-        return new Error(
-          `'xcrun devicectl device info processes' failed. Original error: ERROR: Unknown filter field '${field}'. ` +
-            '(com.apple.dt.CoreDeviceError error 28001 (0x6D61))',
-        );
-      }
-
-      function fakeDevicectl(knownFields: string[], failure?: Error) {
+      function fakeDevicectl(jsonVersion: number, failures: {processes?: Error; jsonVersion?: Error} = {}) {
         const filters: string[] = [];
         const terminated: string[] = [];
+        const calls = {filters, terminated, jsonVersionLookups: 0};
         mock.method(devicectl, 'execute', async (subcommand: string[], opts: {subcommandOptions: string[]}) => {
-          if (subcommand.join(' ') === 'device process terminate') {
-            terminated.push(opts.subcommandOptions[1]);
-            return {stdout: '{}'};
+          switch (subcommand.join(' ')) {
+            case 'list devices':
+              calls.jsonVersionLookups++;
+              // only the first lookup fails
+              if (failures.jsonVersion && calls.jsonVersionLookups === 1) {
+                throw failures.jsonVersion;
+              }
+              return {stdout: JSON.stringify({info: {jsonVersion}})};
+            case 'device process terminate':
+              calls.terminated.push(opts.subcommandOptions[1]);
+              return {stdout: '{}'};
+            default:
+              calls.filters.push(opts.subcommandOptions[1]);
+              if (failures.processes) {
+                throw failures.processes;
+              }
+              return {stdout: PROCESSES};
           }
-          const filter = opts.subcommandOptions[1];
-          filters.push(filter);
-          if (failure) {
-            throw failure;
-          }
-          const field = filter.slice(0, filter.indexOf(' BEGINSWITH '));
-          if (!knownFields.includes(field)) {
-            throw unknownFieldError(field);
-          }
-          return {stdout: PROCESSES};
         });
-        return {filters, terminated};
+        return calls;
       }
 
       beforeEach(function () {
@@ -133,39 +131,58 @@ describe('Devicectl', function () {
       });
 
       it('should filter on ExecutablePath, which Xcode 27 accepts', async function () {
-        const {filters, terminated} = fakeDevicectl(['ExecutablePath']);
+        const {filters, terminated} = fakeDevicectl(5);
 
         assert.strictEqual(await devicectl.terminateApp('com.example.app'), true);
         assert.deepStrictEqual(filters, [`ExecutablePath BEGINSWITH "${APP_PATH}"`]);
         assert.deepStrictEqual(terminated, ['42']);
       });
 
-      it('should fall back to executable.path when devicectl does not know ExecutablePath', async function () {
-        const {filters, terminated} = fakeDevicectl(['executable.path']);
+      it('should filter on executable.path before JSON version 5', async function () {
+        const {filters, terminated} = fakeDevicectl(4);
 
         assert.strictEqual(await devicectl.terminateApp('com.example.app'), true);
-        assert.deepStrictEqual(filters, [
-          `ExecutablePath BEGINSWITH "${APP_PATH}"`,
-          `executable.path BEGINSWITH "${APP_PATH}"`,
-        ]);
+        assert.deepStrictEqual(filters, [`executable.path BEGINSWITH "${APP_PATH}"`]);
         assert.deepStrictEqual(terminated, ['42']);
       });
 
-      it('should not retry when devicectl fails for any other reason', async function () {
-        const {filters} = fakeDevicectl(
-          [],
-          new Error("'xcrun devicectl device info processes' failed. Original error: ERROR: The device was not found."),
-        );
+      it('should not retry when devicectl fails', async function () {
+        const {filters} = fakeDevicectl(5, {
+          processes: new Error(
+            "'xcrun devicectl device info processes' failed. Original error: ERROR: The device was not found.",
+          ),
+        });
 
         await assert.rejects(devicectl.terminateApp('com.example.app'), /The device was not found/);
         assert.strictEqual(filters.length, 1);
       });
 
-      it('should report the rejection when devicectl knows neither field', async function () {
-        const {filters} = fakeDevicectl([]);
+      it('should look up the JSON version only once', async function () {
+        const calls = fakeDevicectl(5);
 
-        await assert.rejects(devicectl.terminateApp('com.example.app'), /Unknown filter field 'executable\.path'/);
-        assert.strictEqual(filters.length, 2);
+        await devicectl.terminateApp('com.example.app');
+        await devicectl.terminateApp('com.example.app');
+        assert.strictEqual(calls.jsonVersionLookups, 1);
+        assert.strictEqual(calls.filters.length, 2);
+      });
+
+      it('should look up the JSON version again after a failed lookup', async function () {
+        const calls = fakeDevicectl(5, {jsonVersion: new Error("'xcrun devicectl list devices' failed.")});
+
+        await assert.rejects(devicectl.terminateApp('com.example.app'), /list devices' failed/);
+        assert.strictEqual(await devicectl.terminateApp('com.example.app'), true);
+        assert.strictEqual(calls.jsonVersionLookups, 2);
+      });
+    });
+
+    describe('executablePathField', function () {
+      it('should be ExecutablePath as of JSON version 5', function () {
+        assert.strictEqual(executablePathField(5), 'ExecutablePath');
+        assert.strictEqual(executablePathField(6), 'ExecutablePath');
+      });
+
+      it('should be executable.path before JSON version 5', function () {
+        assert.strictEqual(executablePathField(4), 'executable.path');
       });
     });
 

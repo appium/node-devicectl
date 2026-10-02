@@ -106,28 +106,19 @@ export function escapeProcessFilterValue(value: string): string {
   return value.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
 }
 
-const EXECUTABLE_PATH_FILTER_FIELDS = ['ExecutablePath', 'executable.path'] as const;
-const UNKNOWN_FILTER_FIELD_ERROR = /CoreDeviceError error 28001\b|Unknown filter field/;
-
 /**
- * Lists the app's processes. Xcode 27's devicectl filters on `ExecutablePath` and rejects
- * `executable.path` (CoreDeviceError 28001); earlier versions use `executable.path`.
+ * Picks the process filter field for the executable path.
+ * Xcode 27 renamed it.
  */
+export function executablePathField(jsonVersion: number): string {
+  return jsonVersion >= 5 ? 'ExecutablePath' : 'executable.path';
+}
+
 async function listProcessesForAppPath(devicectl: Devicectl, appPath: string): Promise<ProcessInfo[]> {
-  const value = escapeProcessFilterValue(appPath);
-  let lastError: unknown;
-  for (const field of EXECUTABLE_PATH_FILTER_FIELDS) {
-    try {
-      const {stdout} = await devicectl.execute(['device', 'info', 'processes'], {
-        subcommandOptions: ['--filter', `${field} BEGINSWITH "${value}"`],
-      });
-      return JSON.parse(stdout).result.runningProcesses;
-    } catch (err) {
-      if (!(err instanceof Error) || !UNKNOWN_FILTER_FIELD_ERROR.test(err.message)) {
-        throw err;
-      }
-      lastError = err;
-    }
-  }
-  throw lastError;
+  const field = executablePathField(await devicectl.getJsonVersion());
+  const filter = `${field} BEGINSWITH "${escapeProcessFilterValue(appPath)}"`;
+  const {stdout} = await devicectl.execute(['device', 'info', 'processes'], {
+    subcommandOptions: ['--filter', filter],
+  });
+  return JSON.parse(stdout).result.runningProcesses;
 }
